@@ -1,4 +1,5 @@
 import { config } from 'dotenv';
+import Express from 'express';
 import Telegraf from 'telegraf';
 import axios from 'axios';
 import { get } from 'lodash';
@@ -7,9 +8,15 @@ import COUNTRIES from './countries.json';
 // config dotenv
 config();
 
+const PORT = process.env.PORT || 3000;
+const HOST = 'https://covid2019-api.herokuapp.com';
+
+const app = Express();
+app.get('/', (_, res) => res.send('Chao Xìn'));
+app.listen(PORT, () => console.log('app is listening on port 8000'));
+
 const bot = new Telegraf(process.env.BOT_TOKEN || '');
 
-const HOST = 'https://covid2019-api.herokuapp.com';
 
 const getData = async (path: string): Promise<string> => {
     try {
@@ -39,7 +46,7 @@ const renderUsage = `
 `;
 
 bot.start((ctx) => ctx.replyWithMarkdown(`
-    *Welcome 👋 to [CovidBot](https://github.com/103cuong/kovid_bot).*
+    *Welcome 👋 to 🤖 CovidBot*
 
     Get realtime data about Coronavirus.
 

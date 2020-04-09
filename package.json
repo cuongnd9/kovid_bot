@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start:dev": "NODE_ENV=development nodemon --ignore build/ --exec ts-node src/index.ts",
-    "build": "rm -rf build && tsc",
+    "build": "rm -rf build && tsc && cp -r src/images build",
     "start": "node ./build/index.js",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint --fix src/**/*.ts"

@@ -13,7 +13,7 @@ const HOST = 'https://covid2019-api.herokuapp.com';
 
 const getData = async (path: string): Promise<string> => {
     try {
-        const response = await axios.get(`${HOST}${path.toLowerCase()}`);
+        const response = await axios.get(`${HOST}${path}`);
         const data = get(response, 'data.data');
         return data ?
             `
@@ -52,7 +52,8 @@ bot.command('all', async (ctx) => {
     ctx.replyWithMarkdown(await getData('/v2/total'));
 });
 bot.command(COUNTRIES, async (ctx) => {
-    ctx.replyWithMarkdown(await getData(`/v2/country${ctx.message?.text}`));
+    const countryName = ctx.message?.text?.replace('_', ' ').toLowerCase();
+    ctx.replyWithMarkdown(await getData(`/v2/country${countryName}`));
 });
 
 bot.launch();

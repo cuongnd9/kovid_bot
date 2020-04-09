@@ -1,3 +1,5 @@
-# typescript-template
+# kovid_bot
 
-🌱 TypeScript template
+🤖 Telegram Bot about Coronavirus
+
+[https://t.me/kotvid_bot](https://t.me/kotvid_bot)

@@ -52,7 +52,7 @@ bot.command('all', async (ctx) => {
     ctx.replyWithMarkdown(await getData('/v2/total'));
 });
 bot.command(COUNTRIES, async (ctx) => {
-    const countryName = ctx.message?.text?.replace('_', '%20').toLowerCase();
+    const countryName = ctx.message?.text?.replace('_', ' ').toLowerCase();
     ctx.replyWithMarkdown(await getData(`/v2/country${countryName}`));
 });
 

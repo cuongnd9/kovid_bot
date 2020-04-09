@@ -13,10 +13,11 @@ const HOST = 'https://covid2019-api.herokuapp.com';
 
 const getData = async (path: string): Promise<string> => {
     try {
-        const response = await axios.get(`${HOST}${path}`);
+        const response = await axios.get(`${HOST}${path.toLowerCase()}`);
         const data = get(response, 'data.data');
         return data ?
             `
+        *${data.location || 'Global'}*
         - confirmed: ${data.confirmed}
         - deaths: ${data.deaths}
         - recovered: ${data.recovered}
@@ -29,11 +30,29 @@ const getData = async (path: string): Promise<string> => {
     }
 }
 
-bot.command('global', async (ctx) => {
-    ctx.reply(await getData('/v2/total'));
-})
+const renderUsage = `
+    *You can control me by sending these commands:*
+
+    /all - global summary
+    /[country] - a [country] summary (e.g. /vietnam or /USA or /VN)
+    /help
+`;
+
+bot.start((ctx) => ctx.replyWithMarkdown(`
+    *Welcome 👋 to [CovidBot](https://github.com/103cuong/kovid_bot).*
+
+    Get realtime data about Coronavirus.
+
+    ${renderUsage}
+`));
+bot.command('help', (ctx) => {
+    ctx.replyWithMarkdown(renderUsage);
+});
+bot.command('all', async (ctx) => {
+    ctx.replyWithMarkdown(await getData('/v2/total'));
+});
 bot.command(COUNTRIES, async (ctx) => {
-    ctx.reply(await getData(`/v2/country${ctx.message?.text}`));
-})
+    ctx.replyWithMarkdown(await getData(`/v2/country${ctx.message?.text}`));
+});
 
 bot.launch();

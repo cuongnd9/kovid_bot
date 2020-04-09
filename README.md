@@ -2,4 +2,4 @@
 
 🤖 Telegram Bot about Coronavirus
 
-[https://t.me/kotvid_bot](https://t.me/kotvid_bot)
+[https://t.me/kovid_bot](https://t.me/kovid_bot)

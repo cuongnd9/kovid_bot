@@ -34,7 +34,7 @@ const renderUsage = `
     *You can control me by sending these commands:*
 
     /all - global summary
-    /[country] - a [country] summary (e.g. /vietnam or /USA or /VN)
+    /[country] - a [country] summary (e.g. /vietnam or /us or /china)
     /help
 `;
 

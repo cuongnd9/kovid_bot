@@ -14,10 +14,9 @@ const PORT = process.env.PORT || 3000;
 const HOST = 'https://covid2019-api.herokuapp.com';
 
 const app = Express();
-app.get('/', (_, res) => res.send('Chao Xìn'));
-app.listen(PORT, () => console.log('app is listening on port 8000'));
-
 const bot = new Telegraf(process.env.BOT_TOKEN || '');
+app.use(bot.webhookCallback(`/${process.env.BOT_SECRET_PATH}`));
+bot.telegram.setWebhook(`${process.env.BOT_URL}:443/${process.env.BOT_SECRET_PATH}`);
 
 const getData = async (path: string): Promise<string> => {
     try {
@@ -69,3 +68,6 @@ bot.on('text', (ctx) =>
 );
 
 bot.launch();
+
+app.get('/', (_, res) => res.send('Chao Xìn'));
+app.listen(PORT, () => console.log('app is listening on port 8000'));

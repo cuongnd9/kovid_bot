@@ -14,17 +14,16 @@ const PORT = process.env.PORT || 3000;
 const HOST = 'https://covid2019-api.herokuapp.com';
 
 const app = Express();
-app.get('/', (_, res) => res.send('Chao Xìn'));
-app.listen(PORT, () => console.log('app is listening on port 8000'));
-
 const bot = new Telegraf(process.env.BOT_TOKEN || '');
+app.use(bot.webhookCallback(`/${process.env.BOT_SECRET_PATH}`));
+bot.telegram.setWebhook(`${process.env.BOT_URL}:443/${process.env.BOT_SECRET_PATH}`);
 
 const getData = async (path: string): Promise<string> => {
     try {
         const response = await axios.get(`${HOST}${path}`);
         const data = get(response, 'data.data');
         return data ?
-        dedent`
+            dedent`
         *${data.location || 'Global'} ${data.location === 'Vietnam' ? '🇻🇳' : ''}*
         - confirmed: ${data.confirmed} 😷
         - deaths: ${data.deaths} 💀
@@ -38,20 +37,20 @@ const getData = async (path: string): Promise<string> => {
     }
 }
 
-const renderUsage = `
-*You can control me by sending these commands:*
+const renderUsage = dedent`
+    *You can control me by sending these commands:*
 
-/all - global summary
-/[country] - a [country] summary (e.g. /vietnam or /us or /china)
-/help
+    /all - global summary
+    /[country] - a [country] summary (e.g. /vietnam or /us or /china)
+    /help
 `;
 
-bot.start((ctx) => ctx.replyWithMarkdown(`
-*Welcome 👋 to 🤖 CovidBot*
+bot.start((ctx) => ctx.replyWithMarkdown(dedent`
+    *Welcome 👋 to 🤖 CovidBot*
 
-Get realtime data about Coronavirus.
+    Get realtime data about Coronavirus.
 
-${renderUsage}
+    ${renderUsage}
 `));
 bot.command('help', (ctx) => {
     ctx.replyWithMarkdown(renderUsage);
@@ -69,3 +68,6 @@ bot.on('text', (ctx) =>
 );
 
 bot.launch();
+
+app.get('/', (_, res) => res.send('Chao Xìn'));
+app.listen(PORT, () => console.log('app is listening on port 8000'));
